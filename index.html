@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>raycasting engine wooow</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="ray.js"></script>
+        <script src="player.js"></script>
+        <script src="wall.js"></script>
+        <script src="game.js" defer></script>
+    </head>
+    <body onmousemove="mouse_position(event)">
+        <canvas id="canvas"></canvas>
+    </body>
+
+    <script>
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+        var canvas = document.getElementById("canvas");
+        canvas.width = width;
+        canvas.height = height;
+    </script>
+</html>
