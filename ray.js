@@ -1,11 +1,17 @@
 class ray {
 
+
     x1;
-    x2;
     y1;
+    x2;
     y2;
 
-    Intersect(wall) { //will take in wall class as parameter, this easiest
+    constructor(x1,y1,angle) {
+        this.x2 = Math.cos(angle)+x1;
+        this.y2 = Math.sin(angle)+y1;
+    }
+
+    cast(wall) { //will take in wall class as parameter, this easiest
         console.log("intersect ran")
         //bla bla if ray hits nothing return length 0
         //if ray hits something return height of column and the walls color array
@@ -25,6 +31,9 @@ class ray {
 
         intersect_x = ( (x1*y2-y1*x2) * (x3-x4) - (x1-x2) * (x3*y4-y3*x4) ) / ( (x1-x2) * (y3-y4) - (y1-y2) * (x3-x4) )
         intersect_y = ( (x1*y2-y1*x2) * (y3-y4) - (y1-y2) * (x3*y4-y3*x4) ) / ( (x1-x2) * (y3-y4) - (y1-y2) * (x3-x4) )
+        
+        
+        
         return [intersect_x,intersect_y]
     }
 }
