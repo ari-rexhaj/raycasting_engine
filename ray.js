@@ -3,16 +3,25 @@ class ray {
 
     x1;
     y1;
+
     x2;
     y2;
 
+    angle;
+    max_length;
+
     constructor(x1,y1,angle) {
-        this.x2 = Math.cos(angle)+x1;
-        this.y2 = Math.sin(angle)+y1;
+        this.x1 = x1
+        this.y1 = y1
+        this.max_length = 1000
+        this.angle = angle
+
+        this.x2 = this.max_length*Math.cos(angle*Math.PI/180)+this.x1;
+        this.y2 = this.max_length*Math.sin(angle*Math.PI/180)+this.y1;
     }
 
     cast(wall) { //will take in wall class as parameter, this easiest
-        console.log("intersect ran")
+
         //bla bla if ray hits nothing return length 0
         //if ray hits something return height of column and the walls color array
         //https://en.wikipedia.org/wiki/Line%E2%80%93line_intersection
@@ -29,10 +38,8 @@ class ray {
         let x4 = this.x2;
         let y4 = this.y2;
 
-        intersect_x = ( (x1*y2-y1*x2) * (x3-x4) - (x1-x2) * (x3*y4-y3*x4) ) / ( (x1-x2) * (y3-y4) - (y1-y2) * (x3-x4) )
-        intersect_y = ( (x1*y2-y1*x2) * (y3-y4) - (y1-y2) * (x3*y4-y3*x4) ) / ( (x1-x2) * (y3-y4) - (y1-y2) * (x3-x4) )
-        
-        
+        let intersect_x = ( (x1*y2-y1*x2) * (x3-x4) - (x1-x2) * (x3*y4-y3*x4) ) / ( (x1-x2) * (y3-y4) - (y1-y2) * (x3-x4) )
+        let intersect_y = ( (x1*y2-y1*x2) * (y3-y4) - (y1-y2) * (x3*y4-y3*x4) ) / ( (x1-x2) * (y3-y4) - (y1-y2) * (x3-x4) )
         
         return [intersect_x,intersect_y]
     }
