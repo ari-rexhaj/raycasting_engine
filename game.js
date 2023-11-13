@@ -7,9 +7,15 @@ let mouseY = 0
 let char = new player()
 
 walls.push(new Wall(100,0,400,200))
+walls.push(new Wall(0,innerHeight,400,500))
 
 function renderWalls(list_of_walls) {
-    console.log("render walls")
+    for(let i = 0; i < walls.length; i++) {
+        ctx.moveTo(walls[i].x1,walls[i].y1)
+        ctx.lineTo(walls[i].x2,walls[i].y2)
+        ctx.stroke() 
+    }
+
 }
 //function mouse_position(e)
 //{
@@ -32,6 +38,7 @@ document.addEventListener("keydown",function(e) {
 
 
 function gameLoop() {
+    time = Date.now()
     ctx.clearRect(0,0,innerWidth,innerHeight)
     for(let i = 0; i < char.amount_rays; i++) {
 
@@ -41,15 +48,10 @@ function gameLoop() {
 
         for(let j = 0; j < walls.length; j++) {
             let hit = temp_ray.cast(walls[j])
-            if (hit[0] != 0) {
-
+            if (hit != undefined) {
                 temp_ray.x2 = hit[0]
                 temp_ray.y2 = hit[1]
             }
-            else {
-                console.log(hit)
-            };
-
         }
 
         ctx.strokeStyle = "black";
@@ -58,8 +60,10 @@ function gameLoop() {
 
         ctx.lineTo(temp_ray.x2,temp_ray.y2);
         ctx.stroke()
+        renderWalls(walls)
     }
 
+    console.log("script took",Date.now()-time)
     setTimeout(gameLoop,1000/60)
 }
 
