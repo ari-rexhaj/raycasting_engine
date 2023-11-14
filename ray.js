@@ -13,7 +13,7 @@ class ray {
     constructor(x1,y1,angle) {
         this.x1 = x1
         this.y1 = y1
-        this.max_length = 1000
+        this.max_length = innerWidth
         this.angle = angle
 
         this.x2 = this.max_length*Math.cos(angle*Math.PI/180)+this.x1;
