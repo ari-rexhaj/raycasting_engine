@@ -27,7 +27,7 @@ function renderWalls(list_of_walls) {
 
 let inputs = []
 
-document.addEventListener("keydown",function(e) {   //controls
+document.addEventListener("keydown",function(e) {   //saves an input to the input list if the key has been pressed
     switch(e.key) {
         case "ArrowRight":
             if(!inputs.includes("ArrowRight")) {
@@ -67,7 +67,7 @@ document.addEventListener("keydown",function(e) {   //controls
     }
 });
 
-document.addEventListener("keyup",function(e) {
+document.addEventListener("keyup",function(e) {     //removes an from the input list if input its been released
     for(i = 0; i < inputs.length; i++) {
         if(inputs[i] == e.key) {
             inputs.splice(i,1)
@@ -86,7 +86,7 @@ function distance(x1,y1,x2,y2) {
 function gameLoop() {
     
     time = Date.now()
-    for(let i = 0; i < inputs.length;i++) {
+    for(let i = 0; i < inputs.length;i++) { //inputs are stored in a list. We then check every input that is currently being pressed
         switch (inputs[i]) {
             case "ArrowRight":
                 char.init_angle += char.turn_speed
@@ -98,28 +98,28 @@ function gameLoop() {
 
             case "w":
                 if(inputs.includes("a") || inputs.includes("d")){
-                    char.movement([0,0.707])
+                    char.movement([0,0.707])    //if the input is moving at a 45 degree angle, each half of the input will add one half of the square root of 2 (idk if this is correct but it seems to work fine)
                 }
                 else{ char.movement([0,1]) }
                 break
 
             case "s":
                 if(inputs.includes("a") || inputs.includes("d")){
-                    char.movement([0,-0.707])
+                    char.movement([0,-0.707])   //if the input is moving at a 45 degree angle, each half of the input will add one half of the square root of 2 (idk if this is correct but it seems to work fine)
                 }
                 else{ char.movement([0,-1]) }
                 break
 
             case "a":
                 if(inputs.includes("w") || inputs.includes("s")){
-                    char.movement([-0.707,0])
+                    char.movement([-0.707,0])   //if the input is moving at a 45 degree angle, each half of the input will add one half of the square root of 2 (idk if this is correct but it seems to work fine)
                 }
                 else{ char.movement([-1,0]) }
                 break
 
             case "d":
                 if(inputs.includes("w") || inputs.includes("s")){
-                    char.movement([0.707,0])
+                    char.movement([0.707,0])    //if the input is moving at a 45 degree angle, each half of the input will add one half of the square root of 2 (idk if this is correct but it seems to work fine)
                 }
                 else{ char.movement([1,0]) }
                 break
@@ -138,24 +138,26 @@ function gameLoop() {
         for(let j = 0; j < walls.length; j++) {     //loop for every wall to find which ray collided with
             let hit = temp_ray.cast(walls[j])       
             if (hit != undefined) {                 //if hit lands on a wall, push to hit_list
-                hit_list.push(hit)
+                hit_list.push([hit,walls[j]])
             }
+        }
 
-            let closest_distance = 10000            //closest distance is used to measure which hit is closest, therefore the closest distance starts with a ridiculously high number
-            let closest_hit = [];                   //where the closest hit that is eventually found will be stored
+        let closest_distance = 10000            //closest distance is used to measure which hit is closest, therefore the closest distance starts with a ridiculously high number
+        let closest_hit = [];                   //where the closest hit that is eventually found will be stored
+        let closest_wall = new Wall();
+        for(let k = 0; k < hit_list.length; k++) {  //is made such that if no hits are made, the loop will be entirely skipped
 
-            for(let k = 0; k < hit_list.length; k++) {  //is made such that if no hits are made, the loop will be entirely skipped
-
-                let hit_distance = distance(temp_ray.x1,temp_ray.y1,hit_list[k][0],hit_list[k][1])  //calculate the distance between ray and hit
-                if (hit_distance < closest_distance) {                                              //if the hit is smaller than closeset distance, become new closest distance and save as closest hit
-                    closest_hit = hit_list[k]
-                    closest_distance = hit_distance
-                }
+            let hit_distance = distance(temp_ray.x1,temp_ray.y1,hit_list[k][0][0],hit_list[k][0][1])  //calculate the distance between ray and hit
+            if (hit_distance < closest_distance) {                                              //if the hit is smaller than closeset distance, become new closest distance and save as closest hit
+                closest_hit = hit_list[k][0]
+                closest_wall = hit_list[k][1]
+                closest_distance = hit_distance
             }
-            if (closest_hit.length != 0) {  //only if closest hit exists, use hit as new end position
-                temp_ray.x2 = closest_hit[0]
-                temp_ray.y2 = closest_hit[1]
-            }
+        }
+        if (closest_hit.length != 0) {  //only if closest hit exists, use hit as new end position
+            temp_ray.x2 = closest_hit[0]
+            temp_ray.y2 = closest_hit[1]
+            closest_wall.give_color(closest_hit[0],closest_hit[1])
         }
 
         ctx.strokeStyle = "black";
@@ -167,8 +169,8 @@ function gameLoop() {
         renderWalls(walls)
     }
 
-    console.log("script took",Date.now()-time,"ms")
-    setTimeout(gameLoop)
+    //console.log("script took",Date.now()-time,"ms")
+    setTimeout(gameLoop,1000/60)
 }
 
 gameLoop()
