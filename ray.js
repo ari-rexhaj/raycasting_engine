@@ -13,7 +13,7 @@ class ray {
     constructor(x1,y1,angle) {
         this.x1 = x1
         this.y1 = y1
-        this.max_length = innerWidth
+        this.max_length = innerWidth*innerHeight
         this.angle = angle
 
         this.x2 = this.max_length*Math.cos(angle*Math.PI/180)+this.x1;
@@ -49,6 +49,8 @@ class ray {
         if (t > 0 && t < 1 && u > 0) {
             let intersect_x = x1 + t * (x2 - x1);
             let intersect_y = y1 + t * (y2 - y1); 
+            this.x2 = intersect_x
+            this.y2 = intersect_y
             return [intersect_x,intersect_y]
         }
         else {
