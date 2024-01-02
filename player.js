@@ -11,8 +11,8 @@ class player {
         this.x = innerWidth/2
         this.y = innerHeight/2
         this.angle = -90
-        this.amount_rays = 20
-        this.fov = 200
+        this.amount_rays = 210
+        this.fov = 210
         this.move_speed = 5
         this.turn_speed = 2
     }
